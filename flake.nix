@@ -18,26 +18,29 @@
         lib = pkgs.lib;
         stdenv = pkgs.stdenv;
         poetryOverrides = {};
-        # poetryEnv = mkPoetryEnv {
-        #   projectDir = ./.;
-        #   overrides = poetryOverrides;
-        #   preferWheels = true;
-        # };
+        poetryEnv = mkPoetryEnv {
+          projectDir = ./.;
+          # overrides = poetryOverrides;
+          preferWheels = true;
+          python = pkgs.python39;
+        };
       in
       {
-        # packages = rec {
-        #   app = mkPoetryApplication {
-        #     projectDir = self;
-        #     overrides = poetryOverrides;
-        #     preferWheels = true;
-        #   };
-        #   appEnv = app.dependencyEnv;
-        #   default = self.packages.${system}.appEnv;
-        # };
+        packages = rec {
+          app = mkPoetryApplication {
+            projectDir = self;
+            # overrides = poetryOverrides;
+            preferWheels = true;
+            python = pkgs.python39;
+          };
+          appEnv = app.dependencyEnv;
+          default = self.packages.${system}.appEnv;
+        };
 
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            # poetryEnv
+            poetryEnv
+            python39
             # python310Packages.pandas
             # python310Packages.scrapy # hopefully 2.7.1 synced with poetry
           ];
