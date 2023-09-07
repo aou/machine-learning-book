@@ -15,8 +15,6 @@
         inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication;
         inherit (poetry2nix.legacyPackages.${system}) mkPoetryEnv;
         pkgs = nixpkgs.legacyPackages.${system};
-        lib = pkgs.lib;
-        stdenv = pkgs.stdenv;
         poetryOverrides = {};
         poetryEnv = mkPoetryEnv {
           projectDir = ./.;
@@ -41,18 +39,10 @@
           buildInputs = with pkgs; [
             poetryEnv
             python39
-            # python310Packages.pandas
-            # python310Packages.scrapy # hopefully 2.7.1 synced with poetry
           ];
           packages = [
             poetry2nix.packages.${system}.poetry
-            pkgs.age
-            pkgs.sops
-            # pkgs.sqlitebrowser
           ];
-          # shellHook = ''
-          #   LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath [ pkgs.stdenv.cc.cc.lib ]};
-          # '';
         };
       });
 }
